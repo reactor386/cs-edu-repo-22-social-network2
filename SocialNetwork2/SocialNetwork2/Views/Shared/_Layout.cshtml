@@ -6,9 +6,15 @@
     <title>@ViewData["Title"] - SocialNetwork2</title>
     <script type="importmap"></script>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/main-page.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/base-styles.css" asp-append-version="true" />
+    <!--
     <link rel="stylesheet" href="~/SocialNetwork2.styles.css" asp-append-version="true" />
+    -->
 </head>
+
+<!--
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
@@ -31,7 +37,25 @@
             </div>
         </nav>
     </header>
+
     <div class="container">
+-->
+
+<body class="background-main">
+    <header class="border-bottom header background-white">
+            <div class="container">
+                <div class="topnav">
+                    <p class="site-title">
+                        <a href="@Url.Action("Index", "Home")">
+                            <img class="site-title-img" src="~/img/logo.png" alt="SocialNetwork" />
+                        </a>
+                    </p>
+                    <partial name="_SearchLayoutPartial" />
+                </div>
+            </div>
+    </header>
+
+    <div class="container background-main"></div>
         <main role="main" class="pb-3">
             @RenderBody()
         </main>

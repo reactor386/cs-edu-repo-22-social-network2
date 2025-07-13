@@ -1,0 +1,88 @@
+﻿@model SocialNetwork2.ViewModels.ChatViewModel;
+
+    <!--
+    <meta http-equiv="refresh" content="15">
+    -->
+
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.17.0/jquery.validate.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.10/jquery.validate.unobtrusive.min.js"></script>
+
+    <!--
+    SignalR
+    обновляем страницу клиента при получении сообщения
+     (вместо предлагаемого обновления по фиксированному промежутку времени)
+    -->
+    <script src="~/js/signalr/dist/browser/signalr.js"></script>
+    <script>
+        const hubConnection = new signalR.HubConnectionBuilder()
+            .withUrl("/chatHub")
+            .withAutomaticReconnect()
+            .build();
+
+        hubConnection.on("ReceiveMessage", function (user, message) {
+            console.log(`SignalR message - ${user}: ${message}`);
+
+            // reload the page
+            // we use .location=.location instead of .location.reload()
+            //  to prevent the confirmation message "The browser must send information
+            //  that will repeat any action that was performed earlier"
+            // window.location.reload(true);
+            // window.location=window.location;
+            
+            window.location.reload(true);
+        });
+
+        hubConnection.start().catch(function (err) {
+            return console.error(err.toString());
+        });
+    </script>
+
+    <div class="block-reg background-white">
+        <div>
+            <form method="get" asp-controller="AccountManager" asp-action="MyPage">
+                <input class="enter_submit" type="submit" value="Назад" />
+            </form>
+        </div>
+
+        <h4 class="center">Чат @Model.You.FirstName и  @Model.ToWhom.FirstName</h4>
+
+        <div class="lined-block">
+            <label class="gray-text">Сообщения</label>
+
+            @if (Model.History.Count != 0)
+            {
+
+                @foreach (var message in @Model.History)
+                {
+                    <div>
+                        <label> @message.Sender.FirstName:</label>
+                        @message.Text
+                    </div>
+                }
+            }
+            else
+            {
+                <div>
+                    <label> У вас пока нет сообщений с  @Model.ToWhom.GetFullName().</label>
+                </div>
+            }
+
+
+        </div>
+
+        <div class="lined-block">
+            <label class="gray-text">Новое сообщение</label>
+
+            <form class="frm" method="post" asp-controller="AccountManager" asp-action="NewMessage"  asp-route-id="@Model.ToWhom.Id">
+                <div asp-validation-summary="ModelOnly"></div>
+                <div>
+                    <div class="mrgn">
+                        <input asp-for="NewMessage.Text" class="form-control emojify" type="text"/>
+                    </div>
+                    <div class="center">
+                        <input class="btn_submit" type="submit" value="Отправить" />
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>

@@ -2,7 +2,7 @@
 using System;
 
 
-namespace SocialNetwork2.Models;
+namespace SocialNetwork2.ViewModels;
 
 public class ErrorViewModel
 {
