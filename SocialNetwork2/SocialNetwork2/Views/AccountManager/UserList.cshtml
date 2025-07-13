@@ -1,0 +1,62 @@
+﻿@model SocialNetwork2.ViewModels.SearchViewModel;
+
+<div class="block-reg background-white">
+
+    @if (Model.UserList.Count != 0)
+    {
+
+        /*
+        @foreach (var user in @Model.UserList.Take(10))
+        */
+        @foreach (var user in @Model.UserList)
+        {
+            <div>
+                <div class="friendbox">
+                    <div class="datadiv">
+                        <div class="mrgn center-align">
+                            <img src="@user.Image" class="ava" />
+                        </div>
+                        <div class="mrgn center-align">
+                            @user.GetFullName()
+                        </div>
+                        <div class="mrgn center-align">
+                            <label class="gray-text">Дата рождения: </label>
+                            <label>@user.BirthDate.ToLongDateString()</label>
+                        </div>
+                        <div class="mrgn center-align">
+                            <label class="gray-text">О себе: </label>
+                            <label>@user.About</label>
+                        </div>
+                        <div class="mrgn center-align">
+                            <label class="gray-text">Статус: </label>
+                            <label>@user.Status</label>
+                        </div>
+                      </div>
+                </div>
+                <!--
+                <label>@user.GetFullName()</label>
+                -->
+                @if (!@user.IsFriendWithCurrent)
+                {
+                    <form asp-controller="AccountManager" asp-action="AddFriend" asp-route-id="@user.Id" method="post">
+                        <button type="submit" class="btn btn-sm btn-primary">
+                            Добавить в друзья
+                        </button>
+                    </form>
+                }
+            </div>
+        }
+    }
+    else
+    {
+        <div>
+            <label> Поиск не дал результатов.</label>
+        </div>
+    }
+
+    <div class="center-align">
+        <form method="get" asp-controller="Home" asp-action="Index">
+            <input class="enter_submit" type="submit" value="Домашняя" />
+        </form>
+    </div>
+</div>
